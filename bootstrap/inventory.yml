@@ -1,0 +1,20 @@
+---
+
+servers:
+  hosts:
+    test:
+      ansible_host: 192.168.100.248
+      ansible_user: ubuntu
+      ansible_password: ubuntu
+    k8s-control:
+      ansible_host: 192.168.100.132
+      ansible_user: ubuntu
+      ansible_password: ubuntu
+    k8s-node-01:
+      ansible_host: 192.168.100.164
+      ansible_user: ubuntu
+      ansible_password: ubuntu
+    k8s-node-02:
+      ansible_host: 192.168.100.181
+      ansible_user: ubuntu
+      ansible_password: ubuntu

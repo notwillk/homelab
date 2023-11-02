@@ -1,0 +1,4 @@
+  - name: Add ssh key for {{ remote_user }} user
+    authorized_key:
+      user: "{{ remote_user }}"
+      key: "{{ lookup('file', '{{ private_key_file }}.pub') }}"

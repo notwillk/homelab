@@ -1,0 +1,19 @@
+---
+
+- name: Bootstrap local
+  hosts: localhost
+  connection: local
+  tasks:
+
+  - name: Generate ssh key
+    become: false
+    community.crypto.openssh_keypair:
+      path: "{{ private_key_file }}"
+      state: present
+      force: no
+
+  - name: Install the latest version of sshpass
+    become: true
+    package:
+      name: sshpass
+      state: latest

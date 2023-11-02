@@ -1,0 +1,6 @@
+- name: Remove dead ssh keys for {{ remote_user }}
+  authorized_key:
+    user: "{{ remote_user }}"
+    key: "{{ item }}"
+    state: absent
+  loop: "{{ lookup('file', 'files/bad_keys').splitlines() }}"

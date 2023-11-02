@@ -1,0 +1,17 @@
+---
+
+- name: Disable root login for SSH
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^PermitRootLogin"
+    line: "PermitRootLogin no"
+    state: present
+  notify: restart ssh
+
+- name: Only allow SSH for anisble user
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^AllowUsers"
+    line: "AllowUsers {{ remote_user }}"
+    state: present
+  notify: restart ssh
