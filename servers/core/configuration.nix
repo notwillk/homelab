@@ -20,12 +20,12 @@
     wireless.enable = false;
     useDHCP = false;
     usePredictableInterfaceNames = false;
-    interfaces.enp1s0.ipv4.addresses = [{
-      address = "192.168.0.3";
-      prefixLength = 24;
+    interfaces.eth0.ipv4.addresses = [{
+      address = "10.10.10.10";
+      prefixLength = 16;
     }];
-    defaultGateway = "192.168.0.1";
-    nameservers = [ "192.168.0.1" ];
+    defaultGateway = "10.10.1.1";
+    nameservers = [ "1.1.1.1" ];
   };
 
   # Configure network proxy if necessary
@@ -60,17 +60,20 @@
   users.users.willk = {
     isNormalUser = true;
     description = "willk";
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "wheel" "networkmanager" "docker" ];
     packages = with pkgs; [];
-    #openssh.authorizedKeys.keys = [ "" ];
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKA9K0cXqW4GO1mJNvm4bfJZ6x2plR0M5Tino/z/eMCH core-server"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDAerPDV5pGQbX4o/3zAKq/6j48wiMlpF9ZSeCRQLR4F william@klancnik.com"
+    ];
   };
 
   users.users.ansible = {
     isNormalUser = true;
     description = "ansible";
     extraGroups = [ "wheel" ];
-    packages = with pkgs; [];
-    #openssh.authorizedKeys.keys = [ "" ];
+    packages = with pkgs; [ python3 ];
+    openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHbOowHs/KIInOQLyhtvS1LIEmeA3k16S4qbzJgUw2ow ansible" ];
   };
 
   security.sudo.wheelNeedsPassword = false;
@@ -98,6 +101,13 @@
 
   # List services that you want to enable:
 
+  virtualisation.docker = {
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
+  };
+
   # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
@@ -119,4 +129,3 @@
   system.stateVersion = "23.11"; # Did you read the comment?
 
 }
-

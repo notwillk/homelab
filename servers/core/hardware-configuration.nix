@@ -32,6 +32,13 @@
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   #networking.useDHCP = lib.mkDefault true;
+  networking.useDHCP = lib.mkDefault false;
+  networking.interfaces = {
+    enp1s0.useDHCP = lib.mkDefault false;
+    enp3s0.useDHCP = lib.mkDefault false;
+    enp4s0.useDHCP = lib.mkDefault false;
+    enp0s20f0u4.useDHCP = lib.mkDefault false;
+  };
   #networking.interfaces.enp0s20f0u4.useDHCP = lib.mkDefault true;
   #networking.interfaces.enp1s0.useDHCP = lib.mkDefault true;
   #networking.interfaces.enp3s0.useDHCP = lib.mkDefault true;
