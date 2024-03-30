@@ -1,0 +1,15 @@
+---
+
+- hosts: all
+  become: yes
+  pre_tasks:
+  - include_role:
+      name: remove-dead-ssh-keys
+  - include_role:
+      name: add-current-ssh-key
+  - include_role:
+      name: lock-down-ssh-access
+
+  tasks:
+  - name: Ping
+    ping:
