@@ -6,6 +6,7 @@
       group: root
       mode: '0644'
     notify: switch-nixos
+    when: ansible_facts['os_family'] == "NixOS"
 
   - name: Update hardware-configuration.nix
     copy:
@@ -15,3 +16,4 @@
       group: root
       mode: '0644'
     notify: switch-nixos
+    when: ansible_facts['os_family'] == "NixOS"
