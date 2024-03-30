@@ -1,0 +1,17 @@
+  - name: Update configuration.nix
+    copy:
+      src: "configs/{{ inventory_hostname }}/configuration.nix"
+      dest: /etc/nixos/configuration.nix
+      owner: root
+      group: root
+      mode: '0644'
+    notify: switch-nixos
+
+  - name: Update hardware-configuration.nix
+    copy:
+      src: "configs/{{ inventory_hostname }}/hardware-configuration.nix"
+      dest: /etc/nixos/hardware-configuration.nix
+      owner: root
+      group: root
+      mode: '0644'
+    notify: switch-nixos

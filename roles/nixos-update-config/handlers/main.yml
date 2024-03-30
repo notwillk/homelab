@@ -1,0 +1,2 @@
+- name: switch-nixos
+  command: nixos-rebuild switch

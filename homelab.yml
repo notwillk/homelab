@@ -6,3 +6,15 @@
   tasks:
   - name: Ping
     ping:
+  - name: Debug
+    ansible.builtin.debug:
+      msg:
+      - "inventory_hostname: {{ inventory_hostname }}"
+      - "ansible_host: {{ ansible_host }}"
+
+- hosts: nixos
+  become: yes
+
+  tasks:
+  - include_role:
+      name: nixos-update-config
