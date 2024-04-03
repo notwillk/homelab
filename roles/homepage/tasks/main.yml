@@ -1,0 +1,56 @@
+  - include_role:
+      name: prepare-docker-compose
+
+  - name: Check for homepage directory
+    stat:
+      path: /opt/homepage
+    register: homepage_directory_check
+
+  - name: Create homepage directory
+    become: yes
+    ansible.builtin.file:
+      path: /opt/stacks/homepage
+      state: directory
+      owner: docker
+      group: docker
+      mode: 0775
+      recurse: yes
+    when: not homepage_directory_check.stat.exists
+
+  - name: Copy config files
+    become: yes
+    ansible.posix.synchronize:
+      src: files/homepage
+      dest: /opt
+
+  - name: Check for stacks directory
+    stat:
+      path: /opt/stacks/homepage
+    register: stacks_directory_check
+
+  - name: Create stacks directory
+    become: yes
+    ansible.builtin.file:
+      path: /opt/stacks/homepage
+      state: directory
+      owner: docker
+      group: docker
+      mode: 0775
+      recurse: yes
+    when: not stacks_directory_check.stat.exists
+
+  - name: Check for file
+    stat:
+      path: /opt/stacks/homepage/docker-compose.yml
+    register: file_check
+
+  - name: Copy docker-compose.yml
+    become: yes
+    ansible.builtin.copy:
+      src: files/docker-compose.yml
+      dest: /opt/stacks/homepage/docker-compose.yml
+      owner: docker
+      group: docker
+      mode: '0644'
+    notify: restart-homepage
+    when: not file_check.stat.exists

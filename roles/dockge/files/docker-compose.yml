@@ -12,3 +12,9 @@ services:
       - /opt/stacks:/opt/stacks
     environment:
       - DOCKGE_STACKS_DIR=/opt/stacks
+    labels:
+      - homepage.group=Services
+      - homepage.name=Dockge
+      - homepage.icon=dockge.png
+      - homepage.href=http://10.10.10.10:5001/
+      - homepage.description=Dockge

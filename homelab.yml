@@ -17,3 +17,5 @@
   tasks:
   - include_role:
       name: dockge
+  - include_role:
+      name: homepage
