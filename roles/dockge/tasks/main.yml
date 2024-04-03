@@ -1,0 +1,34 @@
+  - include_role:
+      name: prepare-docker-compose
+
+  - name: Check for directory
+    stat:
+      path: /opt/stacks
+    register: directory_check
+
+  - name: Creates directory
+    become: yes
+    ansible.builtin.file:
+      path: /opt/stacks
+      state: directory
+      owner: docker
+      group: docker
+      mode: 0775
+      recurse: yes
+    when: not directory_check.stat.exists
+
+  - name: Check for file
+    stat:
+      path: /opt/docker-compose/dockge.yml
+    register: file_check
+
+  - name: Copy docker-compose.yml
+    become: yes
+    ansible.builtin.copy:
+      src: files/docker-compose.yml
+      dest: /opt/docker-compose/dockge.yml
+      owner: docker
+      group: docker
+      mode: '0644'
+    notify: restart-dockge
+    when: not file_check.stat.exists

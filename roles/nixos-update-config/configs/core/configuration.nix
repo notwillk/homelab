@@ -61,7 +61,9 @@
     isNormalUser = true;
     description = "willk";
     extraGroups = [ "wheel" "networkmanager" "docker" ];
-    packages = with pkgs; [];
+    packages = with pkgs; [
+      docker-compose
+    ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKA9K0cXqW4GO1mJNvm4bfJZ6x2plR0M5Tino/z/eMCH core-server"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDAerPDV5pGQbX4o/3zAKq/6j48wiMlpF9ZSeCRQLR4F william@klancnik.com"
@@ -72,8 +74,20 @@
     isNormalUser = true;
     description = "ansible";
     extraGroups = [ "wheel" ];
-    packages = with pkgs; [ python3 ];
+    packages = with pkgs; [
+      docker-compose
+    ];
     openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHbOowHs/KIInOQLyhtvS1LIEmeA3k16S4qbzJgUw2ow ansible" ];
+  };
+
+  users.users.docker = {
+    isNormalUser = true;
+    description = "docker";
+    extraGroups = [ "docker" ];
+    packages = with pkgs; [
+      docker-compose
+    ];
+    openssh.authorizedKeys.keys = [];
   };
 
   security.sudo.wheelNeedsPassword = false;
@@ -87,8 +101,9 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
+    docker-compose
+    python3Full
+    python3Full.pkgs.requests
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -102,6 +117,7 @@
   # List services that you want to enable:
 
   virtualisation.docker = {
+    enable = true;
     rootless = {
       enable = true;
       setSocketVariable = true;
@@ -115,7 +131,7 @@
   };
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 22 ];
+  networking.firewall.allowedTCPPorts = [ 22 5001 ];
   networking.firewall.allowedUDPPorts = [ 22 ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;

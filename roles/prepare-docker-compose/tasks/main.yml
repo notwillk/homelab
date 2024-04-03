@@ -1,0 +1,15 @@
+  - name: Check for directory
+    stat:
+      path: /opt/docker-compose
+    register: directory_check
+
+  - name: Creates directory
+    become: yes
+    ansible.builtin.file:
+      path: /opt/docker-compose
+      state: directory
+      owner: docker
+      group: docker
+      mode: 0775
+      recurse: yes
+    when: not directory_check.stat.exists

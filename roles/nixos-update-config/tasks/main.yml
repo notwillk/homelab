@@ -1,4 +1,5 @@
   - name: Update configuration.nix
+    become: yes
     copy:
       src: "configs/{{ inventory_hostname }}/configuration.nix"
       dest: /etc/nixos/configuration.nix
@@ -9,6 +10,7 @@
     when: ansible_facts['os_family'] == "NixOS"
 
   - name: Update hardware-configuration.nix
+    become: yes
     copy:
       src: "configs/{{ inventory_hostname }}/hardware-configuration.nix"
       dest: /etc/nixos/hardware-configuration.nix

@@ -1,8 +1,6 @@
 ---
 
 - hosts: all
-  become: yes
-
   tasks:
   - name: Ping
     ping:
@@ -14,3 +12,8 @@
       - "ansible_host: {{ ansible_host }}"
   - include_role:
       name: nixos-update-config
+
+- hosts: servers
+  tasks:
+  - include_role:
+      name: dockge
