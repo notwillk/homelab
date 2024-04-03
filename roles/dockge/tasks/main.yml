@@ -3,13 +3,13 @@
 
   - name: Check for directory
     stat:
-      path: /opt/stacks
+      path: /opt/stacks/dockge
     register: directory_check
 
   - name: Creates directory
     become: yes
     ansible.builtin.file:
-      path: /opt/stacks
+      path: /opt/stacks/dockge
       state: directory
       owner: docker
       group: docker
@@ -19,14 +19,14 @@
 
   - name: Check for file
     stat:
-      path: /opt/docker-compose/dockge.yml
+      path: /opt/stacks/dockge/docker-compose.yml
     register: file_check
 
   - name: Copy docker-compose.yml
     become: yes
     ansible.builtin.copy:
       src: files/docker-compose.yml
-      dest: /opt/docker-compose/dockge.yml
+      dest: /opt/stacks/dockge/docker-compose.yml
       owner: docker
       group: docker
       mode: '0644'

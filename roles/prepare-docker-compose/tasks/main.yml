@@ -1,12 +1,12 @@
   - name: Check for directory
     stat:
-      path: /opt/docker-compose
+      path: /opt/stacks
     register: directory_check
 
   - name: Creates directory
     become: yes
     ansible.builtin.file:
-      path: /opt/docker-compose
+      path: /opt/stacks
       state: directory
       owner: docker
       group: docker
