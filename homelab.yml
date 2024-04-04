@@ -19,3 +19,8 @@
       name: dockge
   - include_role:
       name: homepage
+
+- hosts: core
+  tasks:
+  - include_role:
+      name: homebridge

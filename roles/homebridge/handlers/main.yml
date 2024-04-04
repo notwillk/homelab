@@ -1,0 +1,3 @@
+  - name: restart-homebridge
+    ansible.builtin.command: docker compose -f /opt/stacks/homebridge/docker-compose.yml up -d
+    become: yes
