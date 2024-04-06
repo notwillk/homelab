@@ -1,0 +1,3 @@
+  - name: restart-pihole
+    ansible.builtin.command: docker compose -f /opt/stacks/pihole/docker-compose.yml up -d
+    become: yes

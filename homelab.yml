@@ -24,3 +24,5 @@
   tasks:
   - include_role:
       name: homebridge
+  - include_role:
+      name: pihole

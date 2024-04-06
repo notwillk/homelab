@@ -1,0 +1,50 @@
+  - include_role:
+      name: prepare-docker-compose
+
+  - name: Check for stacks directory
+    stat:
+      path: /opt/stacks/pihole
+    register: stacks_directory_check
+
+  - name: Creates stacks directory
+    become: yes
+    ansible.builtin.file:
+      path: /opt/stacks/pihole
+      state: directory
+      owner: docker
+      group: docker
+      mode: 0775
+      recurse: yes
+    when: not stacks_directory_check.stat.exists
+
+  - name: Check for data directory
+    stat:
+      path: /opt/pihole/etc-pihole
+    register: data_directory_check
+
+  - name: Creates data directory
+    become: yes
+    ansible.builtin.file:
+      path: /opt/pihole/etc-pihole
+      state: directory
+      owner: docker
+      group: docker
+      mode: 0775
+      recurse: yes
+    when: not data_directory_check.stat.exists
+
+  - name: Check for file
+    stat:
+      path: /opt/stacks/pihole/docker-compose.yml
+    register: file_check
+
+  - name: Copy docker-compose.yml
+    become: yes
+    ansible.builtin.copy:
+      src: files/docker-compose.yml
+      dest: /opt/stacks/pihole/docker-compose.yml
+      owner: docker
+      group: docker
+      mode: '0644'
+    notify: restart-pihole
+    when: not file_check.stat.exists
