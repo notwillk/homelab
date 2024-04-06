@@ -130,11 +130,26 @@
     settings.PasswordAuthentication = false;
   };
 
-  # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 22 3000 5001 8581 ];
-  networking.firewall.allowedUDPPorts = [ 22 ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  # Firewall settings
+  networking.firewall = {
+    enable = true;
+
+    allowedTCPPorts = [
+      22
+      53
+      3000
+      5001
+    ];
+    allowedTCPPortRanges = [
+      { from = 8000; to = 65535; }
+    ];
+
+    allowedUDPPorts = [
+      22
+      53
+      # 67
+    ];
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
