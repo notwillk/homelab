@@ -1,9 +1,9 @@
-version: '2'
+version: "2"
 services:
   homebridge:
     image: homebridge/homebridge:latest
-    restart: always
-    network_mode: host
+    restart: unless-stopped
+    network_mode: "bridge"
     volumes:
       - /opt/homebridge:/homebridge
     ports:
@@ -11,7 +11,7 @@ services:
     logging:
       driver: json-file
       options:
-        max-size: "10mb"
+        max-size: 10mb
         max-file: "1"
     labels:
       - homepage.group=Services
