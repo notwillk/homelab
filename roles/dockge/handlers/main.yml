@@ -1,3 +1,0 @@
-  - name: restart-dockge
-    ansible.builtin.command: docker compose -f /opt/stacks/dockge/docker-compose.yml up -d
-    become: yes

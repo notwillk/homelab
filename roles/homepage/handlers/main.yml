@@ -1,3 +1,0 @@
-  - name: restart-homepage
-    ansible.builtin.command: docker compose -f /opt/stacks/homepage/docker-compose.yml up -d
-    become: yes

@@ -17,11 +17,6 @@
       recurse: yes
     when: not directory_check.stat.exists
 
-  - name: Check for file
-    stat:
-      path: /opt/stacks/dockge/docker-compose.yml
-    register: file_check
-
   - name: Copy docker-compose.yml
     become: yes
     ansible.builtin.copy:
@@ -30,5 +25,9 @@
       owner: docker
       group: docker
       mode: '0644'
-    notify: restart-dockge
-    when: not file_check.stat.exists
+    register: compose_file
+
+  - name: restart-dockge
+    ansible.builtin.command: docker compose -f /opt/stacks/dockge/docker-compose.yml up -d --build
+    become: yes
+    when: compose_file.changed

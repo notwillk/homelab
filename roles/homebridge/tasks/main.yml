@@ -46,5 +46,9 @@
       owner: docker
       group: docker
       mode: '0644'
-    notify: restart-homebridge
-    when: not file_check.stat.exists
+    register: compose_file
+
+  - name: restart-homebridge
+    ansible.builtin.command: docker compose -f /opt/stacks/homebridge/docker-compose.yml up -d --build
+    become: yes
+    when: compose_file.changed
