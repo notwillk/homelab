@@ -54,7 +54,12 @@
       mode: '0644'
     register: compose_file
 
+  - name: rebuild-homepage
+    ansible.builtin.command: docker compose -f /opt/stacks/homepage/docker-compose.yml build
+    become: yes
+    when: compose_file.changed
+
   - name: restart-homepage
-    ansible.builtin.command: docker compose -f /opt/stacks/homepage/docker-compose.yml up -d --build
+    ansible.builtin.command: docker compose -f /opt/stacks/homepage/docker-compose.yml restart
     become: yes
     when: compose_file.changed

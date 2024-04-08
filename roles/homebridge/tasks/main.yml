@@ -48,7 +48,12 @@
       mode: '0644'
     register: compose_file
 
+  - name: rebuild-homebridge
+    ansible.builtin.command: docker compose -f /opt/stacks/homebridge/docker-compose.yml build
+    become: yes
+    when: compose_file.changed
+
   - name: restart-homebridge
-    ansible.builtin.command: docker compose -f /opt/stacks/homebridge/docker-compose.yml up -d --build
+    ansible.builtin.command: docker compose -f /opt/stacks/homebridge/docker-compose.yml restart
     become: yes
     when: compose_file.changed
