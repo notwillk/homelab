@@ -1,3 +1,3 @@
 #!/bin/bash
 
-ansible-playbook homelab.yml
+ansible-playbook -e @secrets.enc --ask-vault-pass homelab.yml

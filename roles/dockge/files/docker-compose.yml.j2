@@ -1,0 +1,33 @@
+services:
+  dockge:
+    image: louislam/dockge:1
+    restart: unless-stopped
+    networks:
+      traefik_reverse_proxy:
+    ports:
+      - 5001:5001
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/app/data
+      - /opt/stacks:/opt/stacks
+    environment:
+      - DOCKGE_STACKS_DIR=/opt/stacks
+    labels:
+      - homepage.group=Services
+      - homepage.name=Dockge
+      - homepage.icon=dockge.png
+      - homepage.href=https://dockge.{{ansible_host}}/
+      - homepage.description=Dockge
+      - 'traefik.enable=true'
+      - "traefik.http.routers.dockge.entrypoints=http"
+      - "traefik.http.routers.dockge.rule=Host(`dockge.{{ansible_host}}`)"
+      - "traefik.http.middlewares.dockge-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.dockge.middlewares=dockge-https-redirect"
+      - 'traefik.http.routers.dockge-secure.rule=Host(`dockge.{{ansible_host}}`)'
+      - 'traefik.http.routers.dockge-secure.entrypoints=https'
+      - 'traefik.http.routers.dockge-secure.tls=true'
+      - 'traefik.http.services.dockge-secure.loadbalancer.server.port=5001'
+
+networks:
+  traefik_reverse_proxy:
+    external: true

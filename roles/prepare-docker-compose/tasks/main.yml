@@ -1,3 +1,47 @@
+  - name: Add Docker GPG apt Key
+    become: yes
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      state: present
+
+  - name: Add Docker Repository
+    become: yes
+    apt_repository:
+      repo: deb https://download.docker.com/linux/ubuntu focal stable
+      state: present
+
+  - name: Update apt and install docker-ce
+    become: yes
+    apt:
+      name: docker-ce
+      state: latest
+      update_cache: true
+
+  - name: Install pip
+    become: yes
+    apt:
+      name: pip
+      state: latest
+
+  - name: Install python docker
+    become: yes
+    pip:
+      name: docker==6.1.3
+      state: latest
+
+  - name: Install python docker-compose
+    become: yes
+    pip:
+      name: docker-compose
+      state: latest
+
+  - name: Add docker user
+    become: yes
+    ansible.builtin.user:
+      name: docker
+      groups: docker
+      append: yes
+
   - name: Check for directory
     stat:
       path: /opt/stacks

@@ -2,8 +2,6 @@
 
 - hosts: all
   tasks:
-  - name: Ping
-    ping:
   - name: Debug
     ansible.builtin.debug:
       msg:
@@ -13,16 +11,25 @@
   - include_role:
       name: nixos-update-config
 
-- hosts: servers
+- hosts: core
+  vars:
+    CF_DNS_API_TOKEN: "{{cf_dns_api_token_core}}"
   tasks:
   - include_role:
       name: dockge
   - include_role:
       name: homepage
-
-- hosts: core
-  tasks:
   - include_role:
       name: homebridge
   - include_role:
       name: pihole
+
+- hosts: cloud
+  vars:
+    CF_DNS_API_TOKEN: "{{cf_dns_api_token_cloud}}"
+  tasks:
+  - include_role:
+      name: dockge
+  - include_role:
+      name: traefik
+

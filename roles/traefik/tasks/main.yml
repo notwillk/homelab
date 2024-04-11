@@ -1,0 +1,128 @@
+  - include_role:
+      name: prepare-docker-compose
+
+  - name: Create a network
+    become: yes
+    docker_network:
+      name: traefik_reverse_proxy
+
+  - name: Check for stacks directory
+    become: yes
+    stat:
+      path: /opt/stacks/traefik
+    register: stacks_directory_check
+
+  - name: Creates stacks directory
+    become: yes
+    ansible.builtin.file:
+      path: /opt/stacks/traefik
+      state: directory
+      owner: docker
+      group: docker
+      mode: 0775
+      recurse: yes
+    when: not stacks_directory_check.stat.exists
+
+  - name: Check for data directory
+    become: yes
+    stat:
+      path: /opt/traefik
+    register: data_directory_check
+
+  - name: Creates data directory
+    become: yes
+    ansible.builtin.file:
+      path: /opt/traefik
+      state: directory
+      owner: docker
+      group: docker
+      mode: 0775
+      recurse: yes
+    when: not data_directory_check.stat.exists
+
+  - name: Check for logs directory
+    become: yes
+    stat:
+      path: /opt/traefik/logs
+    register: logs_directory_check
+
+  - name: Creates logs directory
+    become: yes
+    ansible.builtin.file:
+      path: /opt/traefik/logs
+      state: directory
+      owner: docker
+      group: docker
+      mode: 0775
+      recurse: yes
+    when: not logs_directory_check.stat.exists
+
+  - name: Copy docker-compose.yml
+    become: yes
+    ansible.builtin.template:
+      src: files/docker-compose.yml.j2
+      dest: /opt/stacks/traefik/docker-compose.yml
+      owner: docker
+      group: docker
+      mode: 0644
+    register: compose_file
+    no_log: True
+
+  - name: Touch acme.json file
+    become: yes
+    ansible.builtin.file:
+      path: /opt/traefik/acme.json
+      state: touch
+      owner: docker
+      group: docker
+      mode: 0600
+      modification_time: preserve
+      access_time: preserve
+
+  - name: Copy config.yml
+    become: yes
+    ansible.builtin.copy:
+      src: files/config.yml
+      dest: /opt/traefik/config.yml
+      owner: docker
+      group: docker
+      mode: 0644
+    register: config_file
+
+  - name: Copy traefik.yml
+    become: yes
+    ansible.builtin.template:
+      src: files/traefik.yml.j2
+      dest: /opt/traefik/traefik.yml
+      owner: docker
+      group: docker
+      mode: 0644
+    register: traefik_file
+
+  - name: Create and start services
+    become: yes
+    community.docker.docker_compose_v2:
+      project_src: /opt/stacks/traefik
+      files:
+      - docker-compose.yml
+
+  - name: Restart services
+    become: yes
+    ansible.builtin.command: docker compose -f /opt/stacks/traefik/docker-compose.yml restart
+    when:
+      - not compose_file.changed
+      - config_file.changed or traefik_file.changed
+
+  - name: Allow all access to tcp port 80
+    become: yes
+    community.general.ufw:
+      rule: allow
+      port: '80'
+      proto: tcp
+
+  - name: Allow all access to tcp port 443
+    become: yes
+    community.general.ufw:
+      rule: allow
+      port: '443'
+      proto: tcp

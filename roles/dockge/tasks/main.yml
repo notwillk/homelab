@@ -19,20 +19,17 @@
 
   - name: Copy docker-compose.yml
     become: yes
-    ansible.builtin.copy:
-      src: files/docker-compose.yml
+    ansible.builtin.template:
+      src: files/docker-compose.yml.j2
       dest: /opt/stacks/dockge/docker-compose.yml
       owner: docker
       group: docker
       mode: '0644'
     register: compose_file
 
-  - name: rebuild-dockge
-    ansible.builtin.command: docker compose -f /opt/stacks/dockge/docker-compose.yml build
+  - name: Create and start services
     become: yes
-    when: compose_file.changed
-
-  - name: restart-dockge
-    ansible.builtin.command: docker compose -f /opt/stacks/dockge/docker-compose.yml restart
-    become: yes
-    when: compose_file.changed
+    community.docker.docker_compose_v2:
+      project_src: /opt/stacks/dockge
+      files:
+      - docker-compose.yml
