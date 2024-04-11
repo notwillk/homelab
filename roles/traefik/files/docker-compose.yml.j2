@@ -21,6 +21,11 @@ services:
       - /opt/traefik/config.yml:/config.yml:ro
       - /opt/traefik/logs:/var/log/traefik
     labels:
+      - homepage.group=Services
+      - homepage.name=Traefik
+      - homepage.icon=traefik.png
+      - homepage.href=https://rp.{{ansible_host}}/
+      - homepage.description=Reverse Proxy
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.entrypoints=http"
       - "traefik.http.routers.traefik.rule=Host(`rp.{{ansible_host}}`)"
@@ -35,6 +40,7 @@ services:
       - "traefik.http.routers.traefik-secure.tls.domains[1].main={{ansible_host}}"
       - "traefik.http.routers.traefik-secure.tls.domains[1].sans=*.{{ansible_host}}"
       - "traefik.http.routers.traefik-secure.service=api@internal"
+      - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
 
 
 networks:

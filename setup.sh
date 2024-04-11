@@ -1,3 +1,3 @@
 #!/bin/bash
 
-ansible-playbook -e @secrets.enc --ask-vault-pass homelab.yml
+ANSIBLE_VAULT_PASSWORD_FILE=.vault_password.txt ansible-playbook -e @secrets.enc homelab.yml
