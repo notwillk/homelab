@@ -17,14 +17,25 @@
       recurse: yes
     when: not directory_check.stat.exists
 
-  - name: Copy docker-compose.yml
+  - name: Copy environment file
     become: yes
     ansible.builtin.template:
-      src: files/docker-compose.yml.j2
-      dest: /opt/stacks/dockge/docker-compose.yml
+      src: files/env.j2
+      dest: /opt/stacks/traefik/.env
       owner: docker
       group: docker
-      mode: '0644'
+      mode: 0644
+    register: env_file
+    no_log: True
+
+  - name: Copy docker-compose.yml
+    become: yes
+    ansible.builtin.copy:
+      src: files/docker-compose.yml
+      dest: /opt/stacks/traefik/docker-compose.yml
+      owner: docker
+      group: docker
+      mode: 0644
     register: compose_file
 
   - name: Create and start services
@@ -33,3 +44,10 @@
       project_src: /opt/stacks/dockge
       files:
       - docker-compose.yml
+
+  - name: Restart services
+    become: yes
+    ansible.builtin.command: docker compose -f /opt/stacks/traefik/docker-compose.yml restart
+    when:
+      - not compose_file.changed
+      - env_file.changed

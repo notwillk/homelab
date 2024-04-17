@@ -10,9 +10,9 @@ services:
     ports:
       - 80:80
       - 443:443
-    environment:
-      - CF_API_EMAIL={{email_address}}
-      - CF_DNS_API_TOKEN={{CF_DNS_API_TOKEN}}
+    env_file:
+      - path: ./.env
+        required: true
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -24,24 +24,23 @@ services:
       - homepage.group=Services
       - homepage.name=Traefik
       - homepage.icon=traefik.png
-      - homepage.href=https://rp.{{ansible_host}}/
+      - homepage.href=https://rp.${ANSIBLE_HOST}/
       - homepage.description=Reverse Proxy
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.entrypoints=http"
-      - "traefik.http.routers.traefik.rule=Host(`rp.{{ansible_host}}`)"
+      - "traefik.http.routers.traefik.rule=Host(`rp.${ANSIBLE_HOST}`)"
       - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.routers.traefik.middlewares=traefik-https-redirect"
       - "traefik.http.routers.traefik-secure.entrypoints=https"
-      - "traefik.http.routers.traefik-secure.rule=Host(`rp.{{ansible_host}}`)"
+      - "traefik.http.routers.traefik-secure.rule=Host(`rp.${ANSIBLE_HOST}`)"
       - "traefik.http.routers.traefik-secure.tls=true"
       - "traefik.http.routers.traefik-secure.tls.certresolver=cloudflare"
       - "traefik.http.routers.traefik-secure.tls.domains[0].main=willapt.net"
       - "traefik.http.routers.traefik-secure.tls.domains[0].sans=*.willapt.net"
-      - "traefik.http.routers.traefik-secure.tls.domains[1].main={{ansible_host}}"
-      - "traefik.http.routers.traefik-secure.tls.domains[1].sans=*.{{ansible_host}}"
+      - "traefik.http.routers.traefik-secure.tls.domains[1].main=${ANSIBLE_HOST}"
+      - "traefik.http.routers.traefik-secure.tls.domains[1].sans=*.${ANSIBLE_HOST}"
       - "traefik.http.routers.traefik-secure.service=api@internal"
       - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
-
 
 networks:
   traefik_reverse_proxy:
