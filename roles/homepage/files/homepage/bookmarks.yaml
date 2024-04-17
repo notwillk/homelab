@@ -2,17 +2,20 @@
 # For configuration options and examples, please see:
 # https://gethomepage.dev/latest/configs/bookmarks
 
-- Developer:
+- Homelab:
     - Homelab repository:
         - abbr: GH
           href: https://github.com/notwillk/homelab
 
-# - Social:
-#     - Reddit:
-#         - abbr: RE
-#           href: https://reddit.com/
+- Developer:
+    - Homepage:
+        - icon: homepage.png
+          href: https://gethomepage.dev/
 
-# - Entertainment:
-#     - YouTube:
-#         - abbr: YT
-#           href: https://youtube.com/
+    - Dockge:
+        - icon: dockge.png
+          href: https://dockge.kuma.pet/
+
+    - Traefik:
+        - icon: traefik.png
+          href: https://traefik.io/traefik/
