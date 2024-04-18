@@ -1,6 +1,3 @@
-  - include_role:
-      name: prepare-docker-compose
-
   - name: Create a network
     become: yes
     docker_network:
