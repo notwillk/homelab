@@ -21,7 +21,7 @@
     become: yes
     ansible.builtin.template:
       src: files/env.j2
-      dest: /opt/stacks/traefik/.env
+      dest: /opt/stacks/dockge/.env
       owner: docker
       group: docker
       mode: 0644
@@ -32,7 +32,7 @@
     become: yes
     ansible.builtin.copy:
       src: files/docker-compose.yml
-      dest: /opt/stacks/traefik/docker-compose.yml
+      dest: /opt/stacks/dockge/docker-compose.yml
       owner: docker
       group: docker
       mode: 0644
@@ -47,7 +47,7 @@
 
   - name: Restart services
     become: yes
-    ansible.builtin.command: docker compose -f /opt/stacks/traefik/docker-compose.yml restart
+    ansible.builtin.command: docker compose -f /opt/stacks/dockge/docker-compose.yml restart
     when:
       - not compose_file.changed
       - env_file.changed
