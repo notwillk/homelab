@@ -6,9 +6,9 @@ services:
     networks:
       traefik_reverse_proxy:
     ports:
-      - 5002:5002
+      - ${HOST_PORT}:5000
     environment:
-      PORT: 5002
+      PORT: 5000
     env_file:
       - path: ./.env
         required: true
@@ -29,7 +29,7 @@ services:
       - 'traefik.http.routers.homepage-secure.rule=Host(`${ANSIBLE_HOST}`)'
       - 'traefik.http.routers.homepage-secure.entrypoints=https'
       - 'traefik.http.routers.homepage-secure.tls=true'
-      - 'traefik.http.services.homepage-secure.loadbalancer.server.port=5002'
+      - 'traefik.http.services.homepage-secure.loadbalancer.server.port=${HOST_PORT}'
       - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
 
 networks:
