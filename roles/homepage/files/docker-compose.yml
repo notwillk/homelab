@@ -19,14 +19,14 @@ services:
       - homepage.group=Services
       - homepage.name=Homepage
       - homepage.icon=homepage.png
-      - homepage.href=https://{{ANSIBLE_HOST}}/
+      - homepage.href=https://${ANSIBLE_HOST}/
       - homepage.description=Homepage
       - 'traefik.enable=true'
       - "traefik.http.routers.homepage.entrypoints=http"
-      - "traefik.http.routers.homepage.rule=Host(`{{ANSIBLE_HOST}}`)"
+      - "traefik.http.routers.homepage.rule=Host(`${ANSIBLE_HOST}`)"
       - "traefik.http.middlewares.homepage-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.routers.homepage.middlewares=homepage-https-redirect"
-      - 'traefik.http.routers.homepage-secure.rule=Host(`{{ANSIBLE_HOST}}`)'
+      - 'traefik.http.routers.homepage-secure.rule=Host(`${ANSIBLE_HOST}`)'
       - 'traefik.http.routers.homepage-secure.entrypoints=https'
       - 'traefik.http.routers.homepage-secure.tls=true'
       - 'traefik.http.services.homepage-secure.loadbalancer.server.port=5002'
