@@ -1,6 +1,6 @@
 services:
   dockge:
-    image: louislam/dockge:1
+    image: louislam/dockge:${IMAGE_VERSION}
     restart: unless-stopped
     networks:
       traefik_reverse_proxy:
