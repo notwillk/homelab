@@ -29,6 +29,8 @@
     CF_DNS_API_TOKEN: "{{cf_dns_api_token_cloud}}"
   tasks:
   - include_role:
+      name: allow-only-ssh
+  - include_role:
       name: homepage
   - include_role:
       name: dockge
