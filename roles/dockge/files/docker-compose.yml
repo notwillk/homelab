@@ -14,7 +14,7 @@ services:
       DOCKGE_STACKS_DIR: /opt/stacks
     env_file: ./.env
     labels:
-      - homepage.group=Services
+      - homepage.group=${ANSIBLE_HOST} services
       - homepage.name=Dockge
       - homepage.icon=dockge.png
       - homepage.href=https://dockge.${ANSIBLE_HOST}/

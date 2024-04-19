@@ -23,7 +23,7 @@ services:
     #   - NET_ADMIN # Required if you are using Pi-hole as your DHCP server, else not needed
     restart: unless-stopped
     labels:
-      - homepage.group=Services
+      - homepage.group=${ANSIBLE_HOST} services
       - homepage.name=Pi-Hole
       - homepage.icon=pi-hole.png
       - homepage.href=http://10.10.10.10:8080/admin

@@ -19,7 +19,7 @@ services:
       - /opt/traefik/config.yml:/config.yml:ro
       - /opt/traefik/logs:/var/log/traefik
     labels:
-      - homepage.group=Services
+      - homepage.group=${ANSIBLE_HOST} services
       - homepage.name=Traefik
       - homepage.icon=traefik.png
       - homepage.href=https://proxy.${ANSIBLE_HOST}/

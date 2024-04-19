@@ -14,7 +14,7 @@ services:
         max-size: 10mb
         max-file: "1"
     labels:
-      - homepage.group=Services
+      - homepage.group=${ANSIBLE_HOST} services
       - homepage.name=Homebridge
       - homepage.icon=homepage.png
       - homepage.href=http://10.10.10.10:8581/

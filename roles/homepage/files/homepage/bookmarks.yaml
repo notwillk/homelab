@@ -7,7 +7,11 @@
         - abbr: GH
           href: https://github.com/notwillk/homelab
 
-- Developer:
+- Service homepages:
+    - Authelia:
+        - icon: authelia.png
+          href: https://www.authelia.com/
+
     - Homepage:
         - icon: homepage.png
           href: https://gethomepage.dev/

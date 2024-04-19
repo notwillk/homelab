@@ -14,7 +14,7 @@ services:
       - /opt/homepage:/app/config
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
-      - homepage.group=Services
+      - homepage.group=${ANSIBLE_HOST} services
       - homepage.name=Homepage
       - homepage.icon=homepage.png
       - homepage.href=https://${ANSIBLE_HOST}/

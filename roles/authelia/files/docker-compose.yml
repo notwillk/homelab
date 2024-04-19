@@ -10,7 +10,7 @@ services:
     security_opt:
       - no-new-privileges:true
     labels:
-      - homepage.group=Services
+      - homepage.group=${ANSIBLE_HOST} services
       - homepage.name=authelia
       - homepage.icon=authelia.png
       - homepage.href=https://auth.${ANSIBLE_HOST}/
