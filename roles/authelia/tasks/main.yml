@@ -1,0 +1,112 @@
+  - name: Check for config directory
+    stat:
+      path: /opt/authelia
+    register: config_directory_check
+
+  - name: Creates config directory
+    become: yes
+    ansible.builtin.file:
+      path: /opt/authelia
+      state: directory
+      owner: docker
+      group: docker
+      mode: 0775
+      recurse: yes
+    when: not config_directory_check.stat.exists
+
+  - name: Check for stacks directory
+    stat:
+      path: /opt/stacks/authelia
+    register: stacks_directory_check
+
+  - name: Creates stacks directory
+    become: yes
+    ansible.builtin.file:
+      path: /opt/stacks/authelia
+      state: directory
+      owner: docker
+      group: docker
+      mode: 0775
+      recurse: yes
+    when: not stacks_directory_check.stat.exists
+
+  - name: Copy configuration file
+    become: yes
+    ansible.builtin.template:
+      src: files/configuration.yml.j2
+      dest: /opt/authelia/configuration.yml
+      owner: docker
+      group: docker
+      mode: 0644
+    register: configuration_file
+    no_log: True
+
+  - name: Copy users database file
+    become: yes
+    ansible.builtin.copy:
+      src: files/users_database.yml
+      dest: /opt/authelia/users_database.yml
+      owner: docker
+      group: docker
+      mode: 0644
+    register: users_database_file
+    no_log: True
+
+  - name: Copy environment file
+    become: yes
+    ansible.builtin.template:
+      src: files/env.j2
+      dest: /opt/stacks/authelia/.env
+      owner: docker
+      group: docker
+      mode: 0644
+    register: env_file
+    no_log: True
+
+  - name: Copy docker-compose.yml
+    become: yes
+    ansible.builtin.copy:
+      src: files/docker-compose.yml
+      dest: /opt/stacks/authelia/docker-compose.yml
+      owner: docker
+      group: docker
+      mode: 0644
+    register: compose_file
+
+  - name: Create and start services
+    become: yes
+    community.docker.docker_compose_v2:
+      project_src: /opt/stacks/authelia
+      files:
+      - docker-compose.yml
+
+  - name: Restart services
+    become: yes
+    ansible.builtin.command: docker compose -f /opt/stacks/authelia/docker-compose.yml restart
+    when:
+      - not compose_file.changed
+      - env_file.changed or configuration_file.changed or users_database_file.changed
+
+  - name: "Allow all access to tcp port 5001"
+    become: yes
+    community.general.ufw:
+      rule: allow
+      port: "5001"
+      proto: tcp
+      delete: true
+
+  - name: "Allow all access to tcp port 5002"
+    become: yes
+    community.general.ufw:
+      rule: allow
+      port: "5002"
+      proto: tcp
+      delete: true
+
+  - name: "Allow all access to tcp port 5003"
+    become: yes
+    community.general.ufw:
+      rule: allow
+      port: "5003"
+      proto: tcp
+      delete: true

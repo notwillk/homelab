@@ -31,6 +31,8 @@
   - include_role:
       name: allow-only-ssh
   - include_role:
+      name: authelia
+  - include_role:
       name: homepage
   - include_role:
       name: dockge
