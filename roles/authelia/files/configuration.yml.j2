@@ -30,7 +30,7 @@ default_redirection_url: https://{{ansible_host}}/
 ## Set the default 2FA method for new users and for when a user has a preferred method configured that has been
 ## disabled. This setting must be a method that is enabled.
 ## Options are totp, webauthn, mobile_push.
-default_2fa_method: ""
+default_2fa_method: "webauthn"
 
 ##
 ## Server Configuration
@@ -568,7 +568,7 @@ password_policy:
 access_control:
   ## Default policy can either be 'bypass', 'one_factor', 'two_factor' or 'deny'. It is the policy applied to any
   ## resource if there is no policy to be applied to the user.
-  default_policy: bypass
+  default_policy: one_factor
 
   # networks:
     # - name: internal
@@ -581,11 +581,11 @@ access_control:
   rules:
     # Rules applied to everyone
     - domain: {{ansible_host}}
-      policy: bypass # change to one_factor
+      policy: one_factor
     - domain: traefik.{{ansible_host}}
-      policy: bypass # change to one_factor
+      policy: one_factor
     - domain: dockge.{{ansible_host}}
-      policy: bypass # change to one_factor
+      policy: one_factor
 
     ## Domain Regex examples. Generally we recommend just using a standard domain.
     # - domain_regex: '^(?P<User>\w+)\.example\.com$'

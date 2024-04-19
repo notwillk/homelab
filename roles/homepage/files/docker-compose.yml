@@ -29,6 +29,7 @@ services:
       - 'traefik.http.routers.homepage-secure.tls=true'
       - 'traefik.http.services.homepage-secure.loadbalancer.server.port=${HOST_PORT}'
       - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
+      - "traefik.http.routers.homepage-secure.middlewares=authelia@docker"
 
 networks:
   traefik_reverse_proxy:
