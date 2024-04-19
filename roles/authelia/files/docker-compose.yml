@@ -10,22 +10,22 @@ services:
     security_opt:
       - no-new-privileges:true
     labels:
-      - homepage.group=${ANSIBLE_HOST} services
+      - homepage.group=${HOST_DOMAIN_NAME} services
       - homepage.name=authelia
       - homepage.icon=authelia.png
-      - homepage.href=https://auth.${ANSIBLE_HOST}/
+      - homepage.href=https://auth.${HOST_DOMAIN_NAME}/
       - homepage.description=Authelia
       - 'traefik.enable=true'
       - "traefik.http.routers.authelia.entrypoints=http"
-      - 'traefik.http.routers.authelia.rule=Host(`auth.${ANSIBLE_HOST}`)'
+      - 'traefik.http.routers.authelia.rule=Host(`auth.${HOST_DOMAIN_NAME}`)'
       - "traefik.http.middlewares.authelia-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.routers.authelia.middlewares=authelia-https-redirect"
-      - 'traefik.http.routers.authelia-secure.rule=Host(`auth.${ANSIBLE_HOST}`)'
+      - 'traefik.http.routers.authelia-secure.rule=Host(`auth.${HOST_DOMAIN_NAME}`)'
       - 'traefik.http.routers.authelia-secure.entrypoints=https'
       - 'traefik.http.routers.authelia-secure.tls=true'
       - 'traefik.http.services.authelia-secure.loadbalancer.server.port=${HOST_PORT}'
       - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
-      - 'traefik.http.middlewares.authelia.forwardAuth.address=http://authelia:${HOST_PORT}/api/verify?rd=https://auth.${ANSIBLE_HOST}'
+      - 'traefik.http.middlewares.authelia.forwardAuth.address=http://authelia:${HOST_PORT}/api/verify?rd=https://auth.${HOST_DOMAIN_NAME}'
       - 'traefik.http.middlewares.authelia.forwardAuth.trustForwardHeader=true'
       - 'traefik.http.middlewares.authelia.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email'
       - 'traefik.http.middlewares.authelia-basic.forwardAuth.address=http://authelia:${HOST_PORT}/api/verify?auth=basic'

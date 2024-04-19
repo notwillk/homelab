@@ -19,24 +19,24 @@ services:
       - /opt/traefik/config.yml:/config.yml:ro
       - /opt/traefik/logs:/var/log/traefik
     labels:
-      - homepage.group=${ANSIBLE_HOST} services
+      - homepage.group=${HOST_DOMAIN_NAME} services
       - homepage.name=Traefik
       - homepage.icon=traefik.png
-      - homepage.href=https://proxy.${ANSIBLE_HOST}/
+      - homepage.href=https://proxy.${HOST_DOMAIN_NAME}/
       - homepage.description=Reverse Proxy
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.entrypoints=http"
-      - "traefik.http.routers.traefik.rule=Host(`proxy.${ANSIBLE_HOST}`)"
+      - "traefik.http.routers.traefik.rule=Host(`proxy.${HOST_DOMAIN_NAME}`)"
       - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.routers.traefik.middlewares=traefik-https-redirect"
       - "traefik.http.routers.traefik-secure.entrypoints=https"
-      - "traefik.http.routers.traefik-secure.rule=Host(`proxy.${ANSIBLE_HOST}`)"
+      - "traefik.http.routers.traefik-secure.rule=Host(`proxy.${HOST_DOMAIN_NAME}`)"
       - "traefik.http.routers.traefik-secure.tls=true"
       - "traefik.http.routers.traefik-secure.tls.certresolver=cloudflare"
       - "traefik.http.routers.traefik-secure.tls.domains[0].main=willapt.net"
       - "traefik.http.routers.traefik-secure.tls.domains[0].sans=*.willapt.net"
-      - "traefik.http.routers.traefik-secure.tls.domains[1].main=${ANSIBLE_HOST}"
-      - "traefik.http.routers.traefik-secure.tls.domains[1].sans=*.${ANSIBLE_HOST}"
+      - "traefik.http.routers.traefik-secure.tls.domains[1].main=${HOST_DOMAIN_NAME}"
+      - "traefik.http.routers.traefik-secure.tls.domains[1].sans=*.${HOST_DOMAIN_NAME}"
       - "traefik.http.routers.traefik-secure.service=api@internal"
       - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
       - "traefik.http.routers.traefik-secure.middlewares=authelia@docker"

@@ -14,17 +14,17 @@ services:
       DOCKGE_STACKS_DIR: /opt/stacks
     env_file: ./.env
     labels:
-      - homepage.group=${ANSIBLE_HOST} services
+      - homepage.group=${HOST_DOMAIN_NAME} services
       - homepage.name=Dockge
       - homepage.icon=dockge.png
-      - homepage.href=https://dockge.${ANSIBLE_HOST}/
+      - homepage.href=https://dockge.${HOST_DOMAIN_NAME}/
       - homepage.description=Dockge
       - 'traefik.enable=true'
       - "traefik.http.routers.dockge.entrypoints=http"
-      - "traefik.http.routers.dockge.rule=Host(`dockge.${ANSIBLE_HOST}`)"
+      - "traefik.http.routers.dockge.rule=Host(`dockge.${HOST_DOMAIN_NAME}`)"
       - "traefik.http.middlewares.dockge-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.routers.dockge.middlewares=dockge-https-redirect"
-      - 'traefik.http.routers.dockge-secure.rule=Host(`dockge.${ANSIBLE_HOST}`)'
+      - 'traefik.http.routers.dockge-secure.rule=Host(`dockge.${HOST_DOMAIN_NAME}`)'
       - 'traefik.http.routers.dockge-secure.entrypoints=https'
       - 'traefik.http.routers.dockge-secure.tls=true'
       - 'traefik.http.services.dockge-secure.loadbalancer.server.port=${HOST_PORT}'
