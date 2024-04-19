@@ -12,9 +12,7 @@ services:
       - /opt/stacks:/opt/stacks
     environment:
       DOCKGE_STACKS_DIR: /opt/stacks
-    env_file:
-      - path: ./.env
-        required: true
+    env_file: ./.env
     labels:
       - homepage.group=Services
       - homepage.name=Dockge

@@ -10,9 +10,7 @@ services:
     ports:
       - 80:80
       - 443:443
-    env_file:
-      - path: ./.env
-        required: true
+    env_file: ./.env
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro

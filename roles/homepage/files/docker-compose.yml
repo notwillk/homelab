@@ -9,9 +9,7 @@ services:
       - ${HOST_PORT}:5000
     environment:
       PORT: 5000
-    env_file:
-      - path: ./.env
-        required: true
+    env_file: ./.env
     volumes:
       - /opt/homepage:/app/config
       - /var/run/docker.sock:/var/run/docker.sock
