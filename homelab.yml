@@ -33,9 +33,11 @@
   - include_role:
       name: authelia
   - include_role:
+      name: dockge
+  - include_role:
       name: homepage
   - include_role:
-      name: dockge
+      name: mealie
   - include_role:
       name: traefik
 

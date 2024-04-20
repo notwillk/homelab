@@ -1,0 +1,66 @@
+  - name: Check for stacks directory
+    stat:
+      path: /opt/stacks/mealie
+    register: stacks_directory_check
+
+  - name: Creates stacks directory
+    become: yes
+    ansible.builtin.file:
+      path: /opt/stacks/mealie
+      state: directory
+      owner: docker
+      group: docker
+      mode: 0775
+      recurse: yes
+    when: not stacks_directory_check.stat.exists
+
+  - name: Check for data directory
+    stat:
+      path: /opt/mealie
+    register: data_directory_check
+
+  - name: Creates data directory
+    become: yes
+    ansible.builtin.file:
+      path: /opt/mealie
+      state: directory
+      owner: docker
+      group: docker
+      mode: 0775
+      recurse: yes
+    when: not data_directory_check.stat.exists
+
+  - name: Copy environment file
+    become: yes
+    ansible.builtin.template:
+      src: files/env.j2
+      dest: /opt/stacks/mealie/.env
+      owner: docker
+      group: docker
+      mode: 0644
+    register: env_file
+    no_log: True
+
+  - name: Copy docker-compose.yml
+    become: yes
+    ansible.builtin.copy:
+      src: files/docker-compose.yml
+      dest: /opt/stacks/mealie/docker-compose.yml
+      owner: docker
+      group: docker
+      mode: 0644
+    register: compose_file
+
+  - name: Create and start services
+    become: yes
+    community.docker.docker_compose_v2:
+      project_src: /opt/stacks/mealie
+      files:
+      - docker-compose.yml
+
+  - name: Restart services
+    become: yes
+    ansible.builtin.command: docker compose -f /opt/stacks/mealie/docker-compose.yml restart
+    when:
+      - not compose_file.changed
+      - env_file.changed

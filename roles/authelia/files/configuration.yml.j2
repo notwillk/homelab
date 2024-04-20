@@ -568,7 +568,7 @@ password_policy:
 access_control:
   ## Default policy can either be 'bypass', 'one_factor', 'two_factor' or 'deny'. It is the policy applied to any
   ## resource if there is no policy to be applied to the user.
-  default_policy: one_factor
+  default_policy: deny
 
   # networks:
     # - name: internal
@@ -580,6 +580,8 @@ access_control:
 
   rules:
     # Rules applied to everyone
+    - domain: mealie.willapt.net
+      policy: bypass
     - domain: {{ansible_host}}
       policy: one_factor
     - domain: traefik.{{ansible_host}}
