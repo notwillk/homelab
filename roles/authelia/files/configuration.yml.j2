@@ -165,7 +165,7 @@ totp:
   disable: false
 
   ## The issuer name displayed in the Authenticator application of your choice.
-  issuer: willapt.net
+  issuer: {{ansible_host}}
 
   ## The TOTP algorithm to use.
   ## It is CRITICAL you read the documentation before changing this option:
@@ -568,7 +568,7 @@ password_policy:
 access_control:
   ## Default policy can either be 'bypass', 'one_factor', 'two_factor' or 'deny'. It is the policy applied to any
   ## resource if there is no policy to be applied to the user.
-  default_policy: deny
+  default_policy: bypass
 
   # networks:
     # - name: internal
@@ -580,13 +580,11 @@ access_control:
 
   rules:
     # Rules applied to everyone
-    - domain: mealie.willapt.net
+    - domain: "auth.{{ansible_host}}"
       policy: bypass
-    - domain: {{ansible_host}}
-      policy: one_factor
-    - domain: traefik.{{ansible_host}}
-      policy: one_factor
-    - domain: dockge.{{ansible_host}}
+    - domain:
+       - "{{ansible_host}}"
+       - "*.{{ansible_host}}"
       policy: one_factor
 
     ## Domain Regex examples. Generally we recommend just using a standard domain.
