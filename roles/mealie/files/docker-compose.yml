@@ -16,7 +16,7 @@ services:
     environment:
       TZ: America/Los_Angeles
       LOG_LEVEL: info
-      ALLOW_SIGNUP: true
+      ALLOW_SIGNUP: false
       PUID: 1001
       PGID: 100
       MAX_WORKERS: 1
