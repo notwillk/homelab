@@ -8,6 +8,7 @@
       - "os_family: {{ ansible_facts['os_family'] }}"
       - "inventory_hostname: {{ inventory_hostname }}"
       - "ansible_host: {{ ansible_host }}"
+      - "domain_name: {{ domain_name }}"
   - include_role:
       name: nixos-update-config
 
