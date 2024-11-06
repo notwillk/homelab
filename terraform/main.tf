@@ -1,6 +1,6 @@
-resource "aws_instance" "my_vm" {
- ami                       = "ami-076ce4c214a7e0764"
- instance_type             = "t3a.micro"
+resource "aws_instance" "public_server" {
+ ami                       = "ami-0819a8650d771b8be"
+ instance_type             = "t3.micro"
 
  tags = {
    Name = "Public Server",
