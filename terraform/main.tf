@@ -1,8 +1,8 @@
 resource "aws_instance" "my_vm" {
- ami                       = "ami-065deacbcaac64cf2" //Ubuntu AMI
- instance_type             = "t2.micro"
+ ami                       = "ami-076ce4c214a7e0764"
+ instance_type             = "t3a.micro"
 
  tags = {
-   Name = "My EC2 instance",
+   Name = "Public Server",
  }
 }
